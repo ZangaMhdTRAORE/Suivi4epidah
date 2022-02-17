@@ -69,21 +69,35 @@ selectInput(
 )
 ```
 
+```{r}
+HTML("<iframe name='date du jour' id='date-du-jour' style='width:105px;height:75px;' src='https://www.mathieuweb.fr/calendrier/date-jour-bleu2.html' scrolling='no' frameborder='0' allowtransparency='true'></iframe>
+")
+```
+
+```{r}
+dateInput(
+  "Date_maj",
+  h4(strong("DONNÉES DU :"), style = "color: #232EA3"),
+  value = Sys.Date() - 1,
+  format = "dd/mm/yyyy"
+)
+```
+
 
 ```{r}
 
 #------------------ Parameters ------------------
 # Set colors
 # https://www.w3.org/TR/css-color-3/#svg-color
-confirmed_color <- "purple"
+confirmed_color <- "red"
 recovered_color <- "forestgreen"
-death_color <- "red"
+death_color <- "purple"
 vaccin_color <- "magenta"
 
 #Données covid
-Confirmes <- 20693
-deces <- 373
-vaccine <- 1259250
+Confirmes <- 20729
+deces <- 375
+vaccine <- 771895
 
 
 virg <- dollar_format(prefix = "",suffix="")
@@ -98,12 +112,11 @@ HTML("<marquee
         scrollamount='5'
         onmousedown='this.stop();'
         onmouseup='this.start();'> 
-     <h4 style='color: #232EA3;' 
-     style='font-weight:bold;' 
-     style='font-size:45px;'>
+     <h4> 
      INFORMATIONS SUR LA COVID-19 AU BURKINA FASO
      </h4>
-     </marquee>")
+     </marquee>
+     ")
 ```
 
 
@@ -150,6 +163,7 @@ flexdashboard::valueBox(value = virg(vaccine) ,
 Row
 ----------------------------------------------------------
 ### Site de vaccination dans la région du Centre
+
 ```{r fig.width=12}
 DT::renderDataTable({
   Site <- Vaccin %>%
@@ -164,11 +178,18 @@ DT::renderDataTable({
       pageLength = 8,
       dom = 'tip'
     ),
+    rownames = FALSE,
+    colnames = c(
+      'DISTRICTS SANITAIRES',
+      'SITES DE VACCINATION',
+      'VACCINS DISPONIBLES'
+    ),
     caption = htmltools::tags$caption(
       style = 'caption-side: bottom; text-align: center;',
       'Source: ',
       htmltools::em(
-        'Ministère de la Santé, de l\'Hygiène Publique et du Bien-être  ')
+        'Ministère de la Santé, de l\'Hygiène Publique et du Bien-être'
+        )
     )
   )
 })
@@ -180,11 +201,16 @@ HTML(
   "<marquee behavior='scroll' 
            direction='left'
            scrollamount='5'
+           vspace='50px'
+           hspace='2px'
            onmousedown='this.stop();'
            onmouseup='this.start();'>
-     <img src='www/vaccin1.jpg'> 
-     <img src='www/Affiche.jpg'> 
-     <img src='www/covid.jpg'>
+     <img src='www/vaccin1.jpg' height = '400' width = '300'> 
+     <img src='www/covid2.jpg' height = '400' width = '400'>
+     <img src='www/Affiche.jpg' height = '400' width = '300'> 
+     <img src='www/covid3.jpg' height = '400' width = '400'>
+     <img src='www/vaccin1.jpg' height = '400' width = '300'> 
+     <img src='www/covid1.jpg' height = '400' width = '400'> 
      </marquee>"
 )
 ```
@@ -283,7 +309,7 @@ output$Covid_cas <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Cas confirmés de covid-19, ( Région:", 
+        "Cas confirmés de covid-19 ( Région:", 
         input$Region_covid, ")") ,
       xaxis = list(
         title = "Date",
@@ -333,7 +359,7 @@ output$covid_deces <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès dus à la covid-19, ( Région:", 
+        "Décès dus à la covid-19 ( Région:", 
         input$Region_covid, ")"),
       xaxis = list(
         title = "Date",
@@ -385,7 +411,7 @@ output$covid_letal <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Létalité de la covid-19, ( Région:", 
+        "Létalité de la covid-19 ( Région:", 
         input$Region_covid, ")"),
       xaxis = list(
         title = "Date",
@@ -438,7 +464,7 @@ output$Covid_cas1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Cas confirmés de covid-19, ( District:", 
+        "Cas confirmés de covid-19 ( District:", 
         input$District_covid, ")"),
       xaxis = list(
         title = "Date",
@@ -485,7 +511,7 @@ output$covid_deces1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès dus à la covid-19, ( District:", 
+        "Décès dus à la covid-19 ( District:", 
         input$District_covid, ")"),
       xaxis = list(
         title = "Date",
@@ -535,7 +561,7 @@ output$covid_letal1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Létalité de la covid-19, ( District:",
+        "Létalité de la covid-19 ( District:",
         input$District_covid,
         ")"
       ),
@@ -619,13 +645,11 @@ pour obtenir des conseils.</em></p></div>
 
 ###
 ```{r}
-HTML(
-  "</br>
-   </br>
+HTML("
   <marquee behavior='scroll' 
            direction='left' 
            scrollamount='4'
-           align='middle'
+           vspace='100px'
            onmousedown='this.stop();'
            onmouseup='this.start();'>
      <img src='www/symp1.jpg' height = '400' width = '400'> 
@@ -689,14 +713,11 @@ pour obtenir des conseils.</em></p></div>
 ```
 ###
 ```{r}
-HTML(
-  "</br>
-  </br>
- 
+HTML("
   <marquee behavior='scroll' 
            direction='left' 
            scrollamount='4'
-           align='middle'
+           vspace='100px'
            onmousedown='this.stop();'
            onmouseup='this.start();'>
      <img src='www/prev1.jpg' height = '400' width = '400'> 
@@ -714,8 +735,8 @@ Dépistage {data-navmenu="COVID-19" data-icon="fa-microscope"}
 ```{r}
 HTML("<div class='body'>
 <h2><b>DÉPISTAGE</b></h2>
-<p>Rendez-vous sur le  <a href='https://bf.usembassy.gov/u-s-citizen-services/covid-19-information/'> site
-</a> de l'embassade des Etats Unies au Burkina Faso pour les informations sur le dépistage de la Covid au Burkina Faso</p>
+<p>Rendez-vous sur le  <a href='https://www.sante.gov.bf/detail?tx_news_pi1%5Baction%5D=detail&tx_news_pi1%5Bcontroller%5D=News&tx_news_pi1%5Bnews%5D=434&cHash=3ed8135bdf139fd1b2c0ae6129195684'> site
+</a> du Ministère de la Santé de l'Hygiène Publique et du Bien-être du Burkina Faso pour les informations sur le dépistage de la Covid au Burkina Faso</p>
 </div>")
 ```
 
@@ -896,7 +917,7 @@ output$mening_cas <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Cas de méningite, ( Région:",
+        "Cas de méningite ( Région:",
         input$Region_mening,
         input$Annee_mening,
         ")"
@@ -950,7 +971,7 @@ output$mening_deces <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès dus à la méningite, ( Région:",
+        "Décès dus à la méningite ( Région:",
         input$Region_mening,
         input$Annee_mening,
         ")"
@@ -1002,7 +1023,7 @@ output$mening_letal <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Létalité de la méningite, ( Région:",
+        "Létalité de la méningite ( Région:",
         input$Region_mening,
         input$Annee_mening,
         ")"
@@ -1056,7 +1077,7 @@ output$attaq_mening <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Taux d'attaque de la méningite, ( Région:",
+        "Taux d'attaque de la méningite ( Région:",
         input$Region_mening,
         input$Annee_mening,
         ")"
@@ -1112,7 +1133,7 @@ output$mening_cas1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Cas de méningite, ( District:",
+        "Cas de méningite ( District:",
         input$District_mening,
         input$Annee_mening,
         ")"
@@ -1163,7 +1184,7 @@ output$mening_deces1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès dus à la méningite, ( District:",
+        "Décès dus à la méningite ( District:",
         input$District_mening,
         input$Annee_mening,
         ")"
@@ -1213,7 +1234,7 @@ output$mening_letal1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Létalité de la méningite, ( District:",
+        "Létalité de la méningite ( District:",
         input$District_mening,
         input$Annee_mening,
         ")"
@@ -1266,7 +1287,7 @@ output$attaq_mening1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Taux d'attaque de la méningite, ( District:",
+        "Taux d'attaque de la méningite ( District:",
         input$District_mening,
         input$Annee_mening,
         ")"
@@ -1384,7 +1405,7 @@ output$palu_cas1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Cas de Paludisme simple, ( Région:",
+        "Cas de Paludisme simple ( Région:",
         input$Region_palu,
         input$Annee_palu,
         ")"
@@ -1436,7 +1457,7 @@ output$palu_cas2 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Cas de Paludisme grave, ( Région:",
+        "Cas de Paludisme grave ( Région:",
         input$Region_palu,
         input$Annee_palu,
         ")"
@@ -1488,7 +1509,7 @@ output$deces_palu <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès dus au Paludisme grave, ( Région:",
+        "Décès dus au Paludisme grave ( Région:",
         input$Region_palu,
         input$Annee_palu,
         ")"
@@ -1541,7 +1562,7 @@ output$letal_palu <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Létalité du Paludisme grave, ( Région:",
+        "Létalité du Paludisme grave ( Région:",
         input$Region_palu,
         input$Annee_palu,
         ")"
@@ -1595,7 +1616,7 @@ output$palu_cas1a <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Cas de Paludisme simple, ( District:",
+        "Cas de Paludisme simple ( District:",
         input$District_palu,
         input$Annee_palu,
         ")"
@@ -1645,7 +1666,7 @@ output$palu_cas2a <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Cas de Paludisme grave, ( District:",
+        "Cas de Paludisme grave ( District:",
         input$District_palu,
         input$Annee_palu,
         ")"
@@ -1695,7 +1716,7 @@ output$deces_palu1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès dus au Paludisme grave, ( District:",
+        "Décès dus au Paludisme grave ( District:",
         input$District_palu,
         input$Annee_palu,
         ")"
@@ -1745,7 +1766,7 @@ output$letal_palu1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Létalité du Paludisme grave, ( District:",
+        "Létalité du Paludisme grave ( District:",
         input$District_palu,
         input$Annee_palu,
         ")"
@@ -1865,7 +1886,7 @@ output$decesmat_inst <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès maternels en institution, ( Région:",
+        "Décès maternels en institution ( Région:",
         input$Region_deces,
         input$Annee_deces,
         ")"
@@ -1920,7 +1941,7 @@ output$decesmat_comu <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès maternels en communauté, ( Région:",
+        "Décès maternels en communauté ( Région:",
         input$Region_deces,
         input$Annee_deces,
         ")"
@@ -1972,7 +1993,7 @@ output$decesneo_inst <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès néonatals en institution, ( Région:",
+        "Décès néonatals en institution ( Région:",
         input$Region_deces,
         input$Annee_deces,
         ")"
@@ -2024,7 +2045,7 @@ output$decesneo_comu <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès néonatals en communauté, ( Région:",
+        "Décès néonatals en communauté ( Région:",
         input$Region_deces,
         input$Annee_deces,
         ")"
@@ -2078,7 +2099,7 @@ output$decesmat_inst1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès maternels en institution, ( District:",
+        "Décès maternels en institution ( District:",
         input$District_deces,
         input$Annee_deces,
         ")"
@@ -2130,7 +2151,7 @@ output$decesmat_comu1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès maternels en communauté, ( District:",
+        "Décès maternels en communauté ( District:",
         input$District_deces,
         input$Annee_deces,
         ")"
@@ -2181,7 +2202,7 @@ output$decesneo_inst1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès néonatals en institution, ( District:",
+        "Décès néonatals en institution ( District:",
         input$District_deces,
         input$Annee_deces,
         ")"
@@ -2231,7 +2252,7 @@ output$decesneo_comu1 <- renderPlotly({
     ) %>%
     layout(
       title = paste(
-        "Décès néonatals en communauté, ( District:",
+        "Décès néonatals en communauté ( District:",
         input$District_deces,
         input$Annee_deces,
         ")"
@@ -2293,16 +2314,6 @@ selectInput(
 
 ```{r}
 selectInput(
-  "Semaine_tx",
-  h4(strong("SEMAINE"), style = "color: #232EA3"),
-  choices = Base %>%
-    select(Semaine) %>%
-    distinct()
-)
-```
-
-```{r}
-selectInput(
   "Region_tx",
   h4(strong("REGION"), style = "color: #232EA3"),
   choices = Base %>%
@@ -2325,6 +2336,15 @@ selectInput(
 )
 ```
 
+```{r}
+selectInput(
+  "Semaine_tx",
+  h4(strong("SEMAINE"), style = "color: #232EA3"),
+  choices = Base %>%
+    select(Semaine) %>%
+    distinct()
+)
+```
 
 
 Row
@@ -2353,8 +2373,8 @@ amChartsOutput(outputId = "completude")
 ```{r}
 output$completude <- renderAmCharts({
   bands = data.frame(
-    start = c(0, 60, 80),
-    end = c(60, 80, 100),
+    start = c(0, 60, 90),
+    end = c(60, 90, 100),
     color = c("#ea3838", "#ffac29", "#00CC00"),
     stringsAsFactors = FALSE
   )
@@ -2369,7 +2389,7 @@ output$completude <- renderAmCharts({
   amAngularGauge(x = X, bands = bands, text = "%") %>%
     amOptions(
       main = paste(
-        "Taux de complétude des TLOH, ( District:",
+        "Taux de complétude des TLOH ( District:",
         input$District_tx,
         input$Annee_tx ,
         ",S",
@@ -2394,8 +2414,8 @@ amChartsOutput(outputId = "promptitude")
 ```{r}
 output$promptitude <- renderAmCharts({
   bands = data.frame(
-    start = c(0, 60, 80),
-    end = c(60, 80, 100),
+    start = c(0, 60, 90),
+    end = c(60, 90, 100),
     color = c("#ea3838", "#ffac29", "#00CC00"),
     stringsAsFactors = FALSE
   )
@@ -2410,7 +2430,7 @@ output$promptitude <- renderAmCharts({
   amAngularGauge(x = Y, bands = bands, text = "%") %>%
     amOptions(
       main = paste(
-        "Taux de promptitude de transmission des TLOH, ( District:",
+        "Taux de promptitude de transmission des TLOH ( District:",
         input$District_tx,
         input$Annee_tx ,
         ",S",
@@ -2550,6 +2570,10 @@ HTML(
 "<div class='point'> Ministère de la Santé du Burkina Faso </div></br>
 
 <img src='www/ms.jpg' height = '400' width = '400' alt='Paris' class='center'> 
+<div class='point'> <i class=' fa fa-globe fa-fw'></i><b>  Site web : </b>
+<a href='https://www.sante.gov.bf/accueil'>
+  https://www.sante.gov.bf/accueil
+</a></div></br>
 
 <div class='point'> <i class=' fa fa-envelope fa-fw'></i><b>  Email : </b>
 <a href='contact@sante.gov.bf'>
@@ -2612,6 +2636,11 @@ HTML(
 
 <div class='point'> Nous contacter:</br>
 Du lundi au vendredi, de 8H00 à 15H00. </div></br>
+
+<div class='point'> <i class=' fa fa-globe fa-fw'></i><b>  Site web : </b>
+<a href='http://www.insp.gov.bf/'>
+  http://www.insp.gov.bf/
+</a></div></br>
 
 <div class='point'> <i class=' fa fa-envelope fa-fw'></i><b>  Email : </b>
 <a href='secretariat@insp.gov.bf'>
@@ -2685,6 +2714,11 @@ HTML(
 <div class='point'> Nous contacter:</br>
 Du lundi au vendredi, de 8H00 à 15H00. </div></br>
 
+<div class='point'> <i class=' fa fa-globe fa-fw'></i><b>  Site web : </b>
+<a href='https://onsp.ms.sante.gov.bf/'>
+  https://onsp.ms.sante.gov.bf/
+</a></div></br>
+
 <div class='point'> <i class=' fa fa-envelope fa-fw'></i><b>  Email : </b>
 <a href='secretariat@insp.gov.bf'>
   secretariat@insp.gov.bf
@@ -2756,7 +2790,7 @@ HTML(
   secretariat@ifris-bf.org
 </a></div></br>
 
-<div class='point'> <i class='fa-solid fa-earth-africa'></i><b>  Site web : </b>
+<div class='point'> <i class=' fa fa-globe fa-fw'></i><b>  Site web : </b>
 <a href='www.ifris-bf.org'>
   www.ifris-bf.org
 </a></div></br>

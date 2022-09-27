@@ -14,6 +14,8 @@ runtime: shiny
 always_allow_html: yes
 ---
 
+
+
 ```{r setup, include=FALSE}
 library(flexdashboard)
 library(shiny)
@@ -24,7 +26,7 @@ library(shinydashboard)
 library(plotly)
 library(rAmCharts)
 library(scales)
-
+library(rsconnect)
 ```
 
 ```{r}
@@ -74,11 +76,12 @@ HTML("<iframe name='date du jour' id='date-du-jour' style='width:105px;height:75
 ")
 ```
 
+
 ```{r}
 dateInput(
   "Date_maj",
   h4(strong("DONNÉES DU :"), style = "color: #232EA3"),
-  value = Sys.Date() - 1,
+  value = Sys.Date() - 7,
   format = "dd/mm/yyyy"
 )
 ```
@@ -95,9 +98,9 @@ death_color <- "purple"
 vaccin_color <- "magenta"
 
 #Données covid
-Confirmes <- 20729
-deces <- 375
-vaccine <- 771895
+Confirmes <- 20899
+deces <- 384
+vaccine <- 1539455
 
 
 virg <- dollar_format(prefix = "",suffix="")
@@ -110,10 +113,11 @@ HTML("<marquee
         behavior='alternate' 
         direction='left' 
         scrollamount='5'
+         hspace='5px'
         onmousedown='this.stop();'
         onmouseup='this.start();'> 
      <h4> 
-     INFORMATIONS SUR LA COVID-19 AU BURKINA FASO
+     INFORMATIONS SUR LA COVID-19 AU BURKINA FASO &thinsp;
      </h4>
      </marquee>
      ")
@@ -648,7 +652,7 @@ pour obtenir des conseils.</em></p></div>
 HTML("
   <marquee behavior='scroll' 
            direction='left' 
-           scrollamount='4'
+           scrollamount='5'
            vspace='100px'
            onmousedown='this.stop();'
            onmouseup='this.start();'>
@@ -716,7 +720,7 @@ pour obtenir des conseils.</em></p></div>
 HTML("
   <marquee behavior='scroll' 
            direction='left' 
-           scrollamount='4'
+           scrollamount='5'
            vspace='100px'
            onmousedown='this.stop();'
            onmouseup='this.start();'>
